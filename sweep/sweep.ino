@@ -3,11 +3,11 @@ int first = 11; //ports for each servo
 int second = 10;
 int third = 9;
 int fourth = 6;
-int pos1 = 0; //position for each servo
-int pos2 = 180;
+int pos1 = 180; //position for each servo
+int pos2 = 0;
 int pos3 = 0;
 int pos4 = 0;
-Servo servo1; //make each servo
+Servo clawServo; //make each servo
 Servo servo2;
 Servo servo3;
 Servo servo4;
@@ -15,7 +15,7 @@ char servo = '1'; //which servo is being edited
 int change = 30; //how much you change the servos position
 
 void setup() {
-  servo1.attach(first); //attach each servo to their port
+  clawServo.attach(first); //attach each servo to their port
   servo2.attach(second);
   servo3.attach(third);
   servo4.attach(fourth);
@@ -25,7 +25,7 @@ void setup() {
 }
 
 void loop() {
-  servo1.write(pos1); //always writes a servo to its position
+  clawServo.write(pos1); //always writes a servo to its position
   servo2.write(pos2);
   servo3.write(pos3);
   servo4.write(pos4);
@@ -38,11 +38,11 @@ void loop() {
       servo = command; //set the servo to be edited to the servo
     } else if(command == '<'){ //decrement command
       if(servo == '1'){ //for the specified servo
-        if(pos1 - change >= 0){ //if the change will go out of bounds
+        if(pos1 - change >= 90){ //if the change will go out of bounds
           pos1 = pos1 - change; //change position
         }
       } else if(servo == '2'){
-        if(pos2 - change >= 90){
+        if(pos2 - change >= 0){
           pos2 = pos2 - change;
           Serial.println(pos2);
         }
