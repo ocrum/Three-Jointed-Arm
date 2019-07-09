@@ -22,7 +22,7 @@ char servo = '3'; //which servo is being edited
 int change = 30; //how much you change the servos position
 
 void setup() {
-  clawServo.attach(first); //attach each servo to their port
+  clawServo.attach(first); //attach each servo to their port1
   servo2.attach(second);
   servo3.attach(third);
   servo4.attach(fourth);
@@ -39,25 +39,27 @@ void loop() {
   if(servo2.read() < pos2){
     servo2.write(servo2.read() + 1);
     delay(15);
-  } else if(servo2.read() > pos2){
+  }
+  if(servo2.read() > pos2){
     servo2.write(servo2.read() - 1);
     delay(15);
-  
-  } else if(servo3.read() < pos3){
+  }
+  if(servo3.read() < pos3){
     servo3.write(servo3.read() + 1);
     delay(15);
-  } else if(servo3.read() > pos3){
+  }
+  if(servo3.read() > pos3){
     servo3.write(servo3.read() - 1);
     delay(15);
-  
-  } else if(servo4.read() < pos4){
+  }if(servo4.read() < pos4){
     servo4.write(servo4.read() + 1);
     delay(15);
-  } else if(servo4.read() > pos4){
+  }if(servo4.read() > pos4){
     servo4.write(servo4.read() - 1);
     delay(15);
   }
   clawServo.write(pos1); //always writes a servo to its position
+  
   if((servo3.read() - servo4.read() - 90) > 0){
     pos2 = pos3 - pos4 - 90;
     Serial.println(pos2);
