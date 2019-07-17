@@ -1,4 +1,4 @@
-const float pi = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481;
+const float pi = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899;
 #include <math.h>
 #include <Servo.h>
 Servo clawServo; //make each servo
@@ -6,84 +6,54 @@ Servo servo2;
 Servo servo3;
 Servo servo4;
 
+int x = 120;
+int y = 260;
 
 
-int toAngle3(int xVal, int yVal) {
-  int answer1 = -1 * toDegrees(pi / 2 - acos(((sq(xVal) + sq(yVal)) / sq(160) - 2) / 2));
-  int answer2 = -1 * toDegrees(pi / 2 + acos(((sq(xVal) + sq(yVal)) / sq(160) - 2) / 2));
 
-  int dif1 = abs(servo3.read() - answer1);
-  int dif2 = abs(servo3.read() - answer2);
-
-  if (min(dif1, dif2) = dif1) {
-    if (answer1 < 0 || answer1 > 180) {
-      if (answer2 < 0 || answer2 > 180) {
-        return -1;
-      } else {
-        return answer2;
-      }
-    }
-    return answer1;
-  } else {
-    if (answer2 < 0 || answer2 > 180) {
-      if (answer1 < 0 || answer1 > 180) {
-        return -1;
-      } else {
-        return answer1;
-      }
-    }
-    return answer2;
-  }
+float toRadians(int degree) {
+  return degree * (pi / 180);
 }
-int toAngle4(int xVal, int yVal) {
-  float t1 = pi - acos(((sq(xVal) + sq(yVal)) / sq(160) - 2) / 2);
-  float t2 = 2 * pi - t1;
-  float q1 = 160 + 160 * cos(t1);
-  float q2 = 160 + 160 * cos(t2);
-  float w1 = 160 * sin(t1);
-  float w2 = 160 * sin(t2);
+int toDegrees(float radian) {
+  return radian * (180 / pi);
+}
 
-  int answer11 = toDegrees(asin((w1 * xVal - q1 * yVal) / (-1 * sq(w1) - sq(q1))));
-  int answer12 = toDegrees(pi - asin((w1 * xVal - q1 * yVal) / (-1 * sq(w1) - sq(q1))));
-  int answer21 = toDegrees(asin((w2 * xVal - q2 * yVal) / (-1 * sq(w2) - sq(q2))));
-  int answer22 = toDegrees(pi - asin((w2 * xVal - q2 * yVal) / (-1 * sq(w2) - sq(q2))));
 
-  int answer1 = -1;
-  int answer2 = -1;
 
-  if (xVal > sqrt(yVal * 320 - sq(yVal))) {
-    answer2 = answer21;
+int toAngle3(long xVal, long yVal) {
+  if(xVal >= 0){
+    return toDegrees(pi / 2 + acos(((double) (sq(xVal) + sq(yVal)) / sq(160) - 2) / 2));
   } else {
-    answer2 = answer22;
-  }
-
-  if (xVal > -1 * sqrt(yVal * 320 - sq(yVal))) {
-    answer1 = answer11;
-  } else {
-    answer1 = answer12;
-  }
-
-  int dif1 = abs(servo4.read() - answer1);
-  int dif2 = abs(servo4.read() - answer2);
-
-  if (min(dif1, dif2) = dif1) {
-    if (answer1 < 0 || answer1 > 180) {
-      if (answer2 < 0 || answer2 > 180) {
-        return -1;
-      } else {
-        return answer2;
-      }
+    return toDegrees(pi / 2 - acos(((double) (sq(xVal) + sq(yVal)) / sq(160) - 2) / 2));
+  } 
+}
+int toAngle4(long xVal, long yVal) {
+  if(xVal >= 0){
+    float t = 2 * pi - (acos(((double) (sq(xVal) + sq(yVal)) / sq(160) - 2) / 2));
+    float q = 160 + 160 * cos(t);
+    float w = 160 * sin(t);
+      
+    int answer1 = toDegrees(asin((double)(w * xVal - q * yVal) / (double)(-1 * sq(w) - sq(q))));
+    int answer2 = toDegrees(pi - asin((double)(w * xVal - q * yVal) / (double)(-1 * sq(w) - sq(q))));
+      
+    if (xVal > sqrt(yVal * 320 - sq(yVal))) {
+      return answer1;
+    } else {
+      return answer2;
     }
-    return answer1;
   } else {
-    if (answer2 < 0 || answer2 > 180) {
-      if (answer1 < 0 || answer1 > 180) {
-        return -1;
-      } else {
-        return answer1;
-      }
+    float t = acos(((double) (sq(xVal) + sq(yVal)) / sq(160) - 2) / 2);
+    float q = 160 + 160 * cos(t);
+    float w = 160 * sin(t);
+      
+    int answer1 = toDegrees(asin((double)(w * xVal - q * yVal) / (double)(-1 * sq(w) - sq(q))));
+    int answer2 = toDegrees(pi - asin((double)(w * xVal - q * yVal) / (double)(-1 * sq(w) - sq(q))));
+      
+    if (xVal > -1 * sqrt(yVal * 320 - sq(yVal))) {
+      return answer1;
+    } else {
+      return answer2;
     }
-    return answer2;
   }
 }
 
@@ -93,9 +63,6 @@ int first = 11; //ports for each servo
 int second = 10;
 int third = 9;
 int fourth = 6;
-
-int x = 200;
-int y = 200;
 
 int cali4 = 5; //calibration becuase I hot glues stuff bad
 
@@ -111,7 +78,7 @@ int pos4 = base4 + cali4;
 
 char servo = '3'; //which servo is being edited
 
-
+int change = 20;
 
 void setup() {
   clawServo.attach(first); //attach each servo to their port1
@@ -121,16 +88,7 @@ void setup() {
   Serial.begin(9600); //how fast you want the serial to read
   while (! Serial); //wait for serial to be ready
   Serial.println();
-  Serial.print(" x = ");
-  Serial.print(x);
-  Serial.print(" y = ");
-  Serial.print(y);
-  Serial.print(" pos3 = ");
-  int xVal = x;
-  int yVal = y;
-  Serial.print(-1 * toDegrees(pi / 2 - acos(((sq(xVal) + sq(yVal)) / sq(160) - 2) / 2)));
-  Serial.print(" pos4 = ");
-  Serial.println(toAngle4(x, y));
+  printCord();
 }
 
 
@@ -139,35 +97,39 @@ void loop() {
   if (Serial.available()) { //if there is something inputted into the serial
     char command = Serial.read(); //what is being read
     if (command == 'w') {
-      if (isValidCord(x, y + 10)) {
-        if (toAngle3(x, y + 10) != -1 && toAngle4(x, y + 10) != -1) {
-          y = y + 10;
+      if (isValidCord(x, y + change)) {
+        if (toAngle3(x, y + change) != -1 && toAngle4(x, y + change) != -1) {
+          y = y + change;
         }
       }
+      printCord();
     } else if (command == 's') {
-      if (isValidCord(x, y - 10)) {
-        if (toAngle3(x, y - 10) != -1 && toAngle4(x, y - 10) != -1) {
-          y = y - 10;
+      if (isValidCord(x, y - change)) {
+        if (toAngle3(x, y - change) != -1 && toAngle4(x, y - change) != -1) {
+          y = y - change;
+        } else {
         }
       }
+      printCord();
     } else if (command == 'a') {
-      if (isValidCord(x - 10, y)) {
-        if (toAngle3(x - 10, y) != -1 && toAngle4(x - 10, y) != -1) {
-          x = x - 10;
+      if (isValidCord(x - change, y)) {
+        if (toAngle3(x - change, y) != -1 && toAngle4(x - change, y) != -1) {
+          x = x - change;
         }
       }
+      printCord();
     } else if (command == 'd') {
-      if (isValidCord(x + 10, y)) {
-        if (toAngle3(x + 10, y) != -1 && toAngle4(x + 10, y) != -1) {
-          x = x + 10;
+      if (isValidCord(x + change, y)) {
+        if (toAngle3(x + change, y) != -1 && toAngle4(x + change, y) != -1) {
+          x = x + change;
         }
       }
+      printCord();
     } else if (command == 'b') {
       Serial.println("The arm has been moved to the default posistion");
-      pos1 = base1; //position for each servo
-      pos2 = base2;
-      pos3 = base3;
-      pos4 = base4 + cali4;
+      x = 0;
+      y = 320;
+      printCord();
     } else if (command == 'o') {
       if (pos1 == 180) {
         pos1 = 90;
@@ -188,50 +150,53 @@ void loop() {
   } else if ((pos3 - pos4 + cali4 - 90) > -90) {
     pos2 = 0;
   }
-  
+
   pos3 = toAngle3(x, y);
   pos4 = toAngle4(x, y) + cali4;
 
+  bool doDelay = false;
   //a smooth way of writing the servo (slowing stuff down)
   if (servo2.read() < pos2) {
     servo2.write(servo2.read() + 1);
-    delay(15);
+    doDelay = true;
   }
   if (servo2.read() > pos2) {
     servo2.write(servo2.read() - 1);
-    delay(15);
+    doDelay = true;
   }
   if (servo3.read() < pos3) {
     servo3.write(servo3.read() + 1);
-    delay(15);
+    doDelay = true;
   }
   if (servo3.read() > pos3) {
     servo3.write(servo3.read() - 1);
-    delay(15);
+    doDelay = true;
   }
   if (servo4.read() < pos4) {
     servo4.write(servo4.read() + 1);
-    delay(15);
+    doDelay = true;
   }
   if (servo4.read() > pos4) {
     servo4.write(servo4.read() - 1);
+    doDelay = true;
+  }
+  if(doDelay){
     delay(15);
   }
   clawServo.write(pos1); //always writes a servo to its position
 }
 
-
-
-float toRadians(int degree) {
-  return degree * (pi / 180);
+void printCord(){
+  Serial.print(" x = ");
+  Serial.print(x);
+  Serial.print(" y = ");
+  Serial.print(y);
+  Serial.print(" pos3 = ");
+  Serial.print(toAngle3(x, y));
+  Serial.print(" pos4 = ");
+  Serial.println(toAngle4(x, y));
 }
 
-int toDegrees(float radian) {
-  return radian * (180 / pi);
-}
-
-
-
-bool isValidCord(int xVal, int yVal) {
+bool isValidCord(long xVal, long yVal) {
   return sqrt(sq(xVal) + sq(yVal)) <= 320;
 }
