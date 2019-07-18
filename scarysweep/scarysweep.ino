@@ -78,7 +78,7 @@ int pos4 = base4 + cali4;
 
 char servo = '3'; //which servo is being edited
 
-int change = 20;
+int change = 40;
 
 void setup() {
   clawServo.attach(first); //attach each servo to their port1
@@ -181,7 +181,7 @@ void loop() {
     doDelay = true;
   }
   if(doDelay){
-    delay(15);
+    delay(10);
   }
   clawServo.write(pos1); //always writes a servo to its position
 }
