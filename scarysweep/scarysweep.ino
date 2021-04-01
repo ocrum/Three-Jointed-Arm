@@ -59,10 +59,10 @@ int toAngle4(long xVal, long yVal) {
 
 
 
-int first = 11; //ports for each servo
-int second = 10;
-int third = 9;
-int fourth = 6;
+int first = 11; //port for claw servo
+int second = 10; //port for top joint servo
+int third = 9; //port for middle joint servo
+int fourth = 6; //port for the bottom join servo
 
 int cali4 = 5; //calibration becuase I hot glues stuff bad
 
